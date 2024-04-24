@@ -45,6 +45,8 @@ public class Tiles
 
 		String [] tileNames = TileSpec.generateTileNames(tilesRc);
 		tiles = new TileSpec[tileNames.length];
+		
+        System.out.println("Total tiles to load: " + tiles.length);
 
 		for (int i = 0; i < tileNames.length; i++) {
 			String tileName = tileNames[i];
@@ -56,11 +58,11 @@ public class Tiles
 			TileSpec ts = TileSpec.parse(i, tileName, rawSpec, tilesRc);
 			tilesByName.put(tileName, ts);
 			tiles[i] = ts;
+			
 		}
 
 		for (int i = 0; i < tiles.length; i++) {
 			tiles[i].resolveReferences(tilesByName);
-
 			TileSpec.BuildingInfo bi = tiles[i].getBuildingInfo();
 			if (bi != null) {
 				for (int j = 0; j < bi.members.length; j++) {
@@ -95,9 +97,18 @@ public class Tiles
 	public static TileSpec get(int tileNumber)
 	{
 		if (tileNumber >= 0 && tileNumber < tiles.length) {
+			
+	        TileSpec tileSpec = tiles[tileNumber];
+	        if (tileSpec == null) {
+	            System.out.println("No TileSpec found for tile number: " + tileNumber);
+	        }
+
 			return tiles[tileNumber];
 		}
 		else {
+			
+	        System.out.println("Tile number out of valid range: " + tileNumber);
+
 			return null;
 		}
 	}

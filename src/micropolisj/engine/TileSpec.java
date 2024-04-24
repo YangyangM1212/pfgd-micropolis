@@ -342,10 +342,21 @@ public class TileSpec
 		int ntiles = recipe.size();
 		String [] tileNames = new String[ntiles];
 		ntiles = 0;
+		
+	    // Log the total number of tiles expected to process
+	    System.out.println("Total number of tiles to process: " + recipe.size());
+
 		for (int i = 0; recipe.containsKey(Integer.toString(i)); i++) {
 			tileNames[ntiles++] = Integer.toString(i);
+	        System.out.println("Processing continuous tile number: " + i);  // Log each continuous tile number processed
+
 		}
 		int naturalNumberTiles = ntiles;
+
+	    // Log if there's a break in continuity
+	    if (ntiles < recipe.size()) {
+	        System.out.println("Break in tile number continuity detected at index: " + ntiles);
+	    }
 
 		for (Object n_obj : recipe.keySet()) {
 			String n = (String)n_obj;
@@ -356,8 +367,15 @@ public class TileSpec
 					continue;
 				}
 			}
-			assert ntiles < tileNames.length;
-			tileNames[ntiles++] = n;
+//			assert ntiles < tileNames.length;
+//			tileNames[ntiles++] = n;
+	        // Log each non-continuous or skipped tile number processed
+	        if (ntiles < tileNames.length) {
+	            tileNames[ntiles] = n;
+	            System.out.println("Processing additional or non-continuous tile number: " + n);
+	        }
+	        ntiles++;
+
 		}
 		assert ntiles == tileNames.length;
 		return tileNames;
