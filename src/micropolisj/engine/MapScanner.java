@@ -41,7 +41,8 @@ class MapScanner extends TileBehavior
 		STADIUM_EMPTY,
 		STADIUM_FULL,
 		AIRPORT,
-		SEAPORT;
+		SEAPORT,
+		FINANCEINSTITUTION;
 	}
 
 	@Override
@@ -83,6 +84,9 @@ class MapScanner extends TileBehavior
 			return;
 		case SEAPORT:
 			doSeaport();
+			return;
+		case FINANCEINSTITUTION:
+			doFinanceInstitution();
 			return;
 		default:
 			assert false;
@@ -227,6 +231,21 @@ class MapScanner extends TileBehavior
 
 		city.fireStMap[ypos/8][xpos/8] += z;
 	}
+	
+	void doFinanceInstitution()
+	{
+	    boolean powerOn = checkZonePower();  // Check if the building is powered
+	    
+	    if (powerOn) {
+	        // Increment the finance institution count only if powered
+	        city.financeInstitutionCount++; 
+	        // Only add funds if the building is powered
+	        if (city.cityTime % 48 == 0) {  // one year
+	            city.budget.totalFunds += 300 * city.financeInstitutionCount;  // Add 300 per finance institution
+	        }
+	    }
+	}
+
 
 	void doPoliceStation()
 	{
